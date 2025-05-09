@@ -1,0 +1,66 @@
+{
+  "name": "electron-amzing",
+  "version": "1.0.0",
+  "description": "Advanced image processing and file management app with Electron, Vue3 and Python",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev:vite": "vite",
+    "dev:electron": "cross-env IS_DEV=true electron .",
+    "build": "vite build && electron-builder",
+    "build:vite": "vite build",
+    "build:electron": "electron-builder"
+  },
+  "dependencies": {
+    "electron-is-dev": "^2.0.0",
+    "electron-serve": "^1.1.0",
+    "electron-store": "^8.1.0",
+    "python-shell": "^5.0.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4",
+    "pinia": "^2.1.6",
+    "vue-i18n": "^9.2.2",
+    "daisyui": "^4.4.19"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.3.4",
+    "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.1",
+    "cross-env": "^7.0.3",
+    "electron": "^36.2.0",
+    "electron-builder": "^24.6.4",
+    "postcss": "^8.4.32",
+    "sass": "^1.68.0",
+    "tailwindcss": "^3.3.3",
+    "vite": "^4.4.5"
+  },
+  "build": {
+    "appId": "com.electron.amzing",
+    "productName": "Amzing",
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "python/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "release"
+    },
+    "extraResources": [
+      {
+        "from": "python",
+        "to": "python"
+      }
+    ],
+    "win": {
+      "target": ["nsis"]
+    },
+    "mac": {
+      "target": ["dmg"]
+    },
+    "linux": {
+      "target": ["AppImage"]
+    }
+  }
+}

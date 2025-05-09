@@ -1,0 +1,57 @@
+{
+  "app": {
+    "title": "Amzing 图像处理工具",
+    "description": "强大的图像处理和文件管理工具"
+  },
+  "nav": {
+    "home": "首页",
+    "textExtraction": "文本提取",
+    "imageProcessing": "图像处理",
+    "fileManagement": "文件管理"
+  },
+  "theme": {
+    "light": "切换到亮色模式",
+    "dark": "切换到暗色模式"
+  },
+  "language": {
+    "en": "English",
+    "zh": "中文"
+  },
+  "textExtractor": {
+    "title": "文本提取",
+    "description": "从图像中提取文本并复制到剪贴板",
+    "instruction": "截取屏幕区域或上传图片",
+    "captureButton": "截取屏幕",
+    "uploadButton": "上传图片",
+    "copyButton": "复制文本",
+    "resultTitle": "提取结果",
+    "noResult": "尚未提取任何文本"
+  },
+  "imageProcessor": {
+    "title": "图像处理",
+    "description": "批量处理图像，去除污点和纠正倾斜",
+    "selectButton": "选择文件夹",
+    "processing": "处理中...",
+    "resultTitle": "处理结果",
+    "totalImages": "总图像数",
+    "processedImages": "已处理图像",
+    "noResult": "尚未处理任何图像"
+  },
+  "fileManager": {
+    "title": "文件管理",
+    "description": "批量重命名文件夹和自动整理文件",
+    "renameTitle": "批量重命名文件夹",
+    "renameDescription": "清理文件夹名称，移除空格和特殊字符",
+    "renameButton": "选择父文件夹",
+    "organizeTitle": "按类型整理文件",
+    "organizeDescription": "自动将文件整理到不同类型的文件夹中",
+    "organizeButton": "选择文件夹",
+    "resultTitle": "操作结果",
+    "totalFolders": "总文件夹数",
+    "renamedFolders": "已重命名文件夹",
+    "totalFiles": "总文件数",
+    "movedFiles": "已移动文件",
+    "clearResults": "清除结果",
+    "noResult": "尚未执行任何操作"
+  }
+}

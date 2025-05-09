@@ -1,0 +1,57 @@
+{
+  "app": {
+    "title": "Amzing Image Tool",
+    "description": "Powerful image processing and file management tool"
+  },
+  "nav": {
+    "home": "Home",
+    "textExtraction": "Text Extraction",
+    "imageProcessing": "Image Processing",
+    "fileManagement": "File Management"
+  },
+  "theme": {
+    "light": "Switch to Light Mode",
+    "dark": "Switch to Dark Mode"
+  },
+  "language": {
+    "en": "English",
+    "zh": "中文"
+  },
+  "textExtractor": {
+    "title": "Text Extraction",
+    "description": "Extract text from images and copy to clipboard",
+    "instruction": "Capture screen area or upload an image",
+    "captureButton": "Capture Screen",
+    "uploadButton": "Upload Image",
+    "copyButton": "Copy Text",
+    "resultTitle": "Extraction Result",
+    "noResult": "No text extracted yet"
+  },
+  "imageProcessor": {
+    "title": "Image Processing",
+    "description": "Batch process images to remove spots and correct skew",
+    "selectButton": "Select Folder",
+    "processing": "Processing...",
+    "resultTitle": "Processing Results",
+    "totalImages": "Total Images",
+    "processedImages": "Processed Images",
+    "noResult": "No images processed yet"
+  },
+  "fileManager": {
+    "title": "File Management",
+    "description": "Batch rename folders and organize files automatically",
+    "renameTitle": "Batch Rename Folders",
+    "renameDescription": "Clean up folder names by removing spaces and special characters",
+    "renameButton": "Select Parent Folder",
+    "organizeTitle": "Organize Files by Type",
+    "organizeDescription": "Automatically organize files into folders based on file type",
+    "organizeButton": "Select Folder",
+    "resultTitle": "Operation Results",
+    "totalFolders": "Total Folders",
+    "renamedFolders": "Renamed Folders",
+    "totalFiles": "Total Files",
+    "movedFiles": "Moved Files",
+    "clearResults": "Clear Results",
+    "noResult": "No operations performed yet"
+  }
+}
