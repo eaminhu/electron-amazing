@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>屏幕截图</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      cursor: crosshair;
+      user-select: none;
+      background: transparent;
+    }
+    
+    #capture-area {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+    
+    #selection {
+      position: absolute;
+      border: 2px solid #4f46e5;
+      background-color: rgba(79, 70, 229, 0.1);
+      display: none;
+      z-index: 2;
+    }
+    
+    .instructions {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-family: system-ui, -apple-system, sans-serif;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .size-indicator {
+      position: fixed;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      pointer-events: none;
+      z-index: 3;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="capture-area"></div>
+  <div id="selection"></div>
+  <div class="instructions">
+    点击并拖动选择区域，按 Enter 确认，按 Esc 取消
+  </div>
+  <div class="size-indicator"></div>
+  
+  <script>
+    // 使用 electron 模块
+    const { ipcRenderer } = require('electron');
+    
+    const captureArea = document.getElementById('capture-area');
+    const selection = document.getElementById('selection');
+    const sizeIndicator = document.querySelector('.size-indicator');
+    
+    let isSelecting = false;
+    let startX = 0;
+    let startY = 0;
+    
+    console.log('截图窗口已加载');
+    
+    // 更新选择框尺寸显示
+    function updateSizeIndicator(width, height, x, y) {
+      sizeIndicator.textContent = `${width} x ${height}`;
+      sizeIndicator.style.display = 'block';
+      sizeIndicator.style.left = `${x + width + 10}px`;
+      sizeIndicator.style.top = `${y}px`;
+    }
+    
+    captureArea.addEventListener('mousedown', (e) => {
+      console.log('开始选择');
+      isSelecting = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      
+      selection.style.left = `${startX}px`;
+      selection.style.top = `${startY}px`;
+      selection.style.width = '0';
+      selection.style.height = '0';
+      selection.style.display = 'block';
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      if (!isSelecting) return;
+      
+      const currentX = e.clientX;
+      const currentY = e.clientY;
+      
+      const width = Math.abs(currentX - startX);
+      const height = Math.abs(currentY - startY);
+      
+      const left = Math.min(startX, currentX);
+      const top = Math.min(startY, currentY);
+      
+      selection.style.left = `${left}px`;
+      selection.style.top = `${top}px`;
+      selection.style.width = `${width}px`;
+      selection.style.height = `${height}px`;
+      
+      updateSizeIndicator(width, height, left, top);
+    });
+    
+    document.addEventListener('mouseup', () => {
+      console.log('结束选择');
+      isSelecting = false;
+    });
+    
+    document.addEventListener('keydown', async (e) => {
+      console.log('按键按下:', e.key);
+      
+      if (e.key === 'Escape') {
+        console.log('取消截图');
+        ipcRenderer.send('capture-cancelled');
+      }
+      
+      if (e.key === 'Enter' && selection.style.display === 'block') {
+        console.log('确认截图');
+        const bounds = {
+          x: parseInt(selection.style.left),
+          y: parseInt(selection.style.top),
+          width: parseInt(selection.style.width),
+          height: parseInt(selection.style.height)
+        };
+        
+        console.log('选择区域:', bounds);
+        
+        if (bounds.width > 10 && bounds.height > 10) {
+          try {
+            // 使用主进程的方法进行截图
+            const result = await ipcRenderer.invoke('do-capture-screen', bounds);
+            
+            if (!result || !result.success) {
+              throw new Error(result.message || '截图失败');
+            }
+            
+            console.log('图片已保存:', result.imagePath);
+            ipcRenderer.send('capture-completed', { imagePath: result.imagePath, bounds });
+          } catch (error) {
+            console.error('截图失败:', error);
+            
+            // 增强的错误处理
+            const errorMessage = document.createElement('div');
+            errorMessage.style.position = 'fixed';
+            errorMessage.style.top = '50%';
+            errorMessage.style.left = '50%';
+            errorMessage.style.transform = 'translate(-50%, -50%)';
+            errorMessage.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
+            errorMessage.style.color = 'white';
+            errorMessage.style.padding = '15px 20px';
+            errorMessage.style.borderRadius = '5px';
+            errorMessage.style.zIndex = '1000';
+            errorMessage.style.maxWidth = '80%';
+            errorMessage.style.textAlign = 'center';
+            errorMessage.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+            errorMessage.innerHTML = `<strong>截图失败</strong><br>${error.message || '未知错误'}`;
+            
+            document.body.appendChild(errorMessage);
+            
+            // 3秒后自动关闭错误提示
+            setTimeout(() => {
+              errorMessage.style.opacity = '0';
+              errorMessage.style.transition = 'opacity 0.5s';
+              setTimeout(() => {
+                document.body.removeChild(errorMessage);
+              }, 500);
+            }, 3000);
+            
+            // 2秒后自动关闭截图窗口
+            setTimeout(() => {
+              ipcRenderer.send('capture-cancelled');
+            }, 2000);
+          }
+        } else {
+          console.log('选择区域太小，忽略');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

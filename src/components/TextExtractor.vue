@@ -63,9 +63,21 @@ const handleTextSelection = () => {
 const captureScreen = async () => {
   isCapturing.value = true;
   try {
-    // 这里需要实现屏幕截图功能，可能需要使用 Electron 的 desktopCapturer API
-    // 由于实现较复杂，这里仅作为示例
-    showToast('屏幕截图功能尚未实现', 'warning');
+    // 调用主进程的屏幕截图方法
+    const result = await window.electron.captureScreen();
+    
+    if (result.success) {
+      extractedText.value = result.text;
+      showToast('屏幕文本提取成功', 'success');
+      
+      // 如果有提取到文本，自动复制到剪贴板
+      if (result.text) {
+        await window.electron.copyToClipboard(result.text);
+        showToast('已复制到剪贴板', 'success');
+      }
+    } else {
+      showToast(`屏幕截图失败: ${result.message}`, 'error');
+    }
   } catch (error) {
     console.error('Error capturing screen:', error);
     showToast('截图失败', 'error');

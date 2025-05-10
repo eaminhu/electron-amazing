@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
+// 添加屏幕截图 API
 contextBridge.exposeInMainWorld('electron', {
   // 主题相关
   getTheme: () => ipcRenderer.invoke('get-theme'),
@@ -20,4 +21,7 @@ contextBridge.exposeInMainWorld('electron', {
   // 文件管理相关
   renameFolders: () => ipcRenderer.invoke('rename-folders'),
   organizeFolders: () => ipcRenderer.invoke('organize-folders'),
+  
+  // 屏幕截图并识别文字
+  captureScreen: () => ipcRenderer.invoke('capture-screen'),
 });
