@@ -55,7 +55,7 @@ ipcMain.handle('extract-text', async (_, imageData) => {
 });
 
 // 复制到剪贴板
-ipcMain.handle('copy-to-clipboard', (_, text) => {
-  clipboard.writeText(text);
-  return { success: true };
-});
+// ipcMain.handle('copy-to-clipboard', (_, text) => {
+//   clipboard.writeText(text);
+//   return { success: true };
+// });

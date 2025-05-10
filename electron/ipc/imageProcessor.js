@@ -16,6 +16,22 @@ ipcMain.handle('select-folder', async () => {
   return { success: true, folderPath: result.filePaths[0] };
 });
 
+// 添加选择图片文件的处理函数
+ipcMain.handle('select-images', async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openFile', 'multiSelections'],
+    filters: [
+      { name: '图片文件', extensions: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'] }
+    ]
+  });
+  
+  if (result.canceled) {
+    return { success: false, message: '操作已取消' };
+  }
+  
+  return { success: true, filePaths: result.filePaths };
+});
+
 // 处理图像
 ipcMain.handle('process-images', async (_, folderPath) => {
   try {

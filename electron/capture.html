@@ -124,7 +124,82 @@
     document.addEventListener('mouseup', () => {
       console.log('结束选择');
       isSelecting = false;
+      
+      // 如果有选择区域，立即进行截图
+      if (selection.style.display === 'block' && 
+          parseInt(selection.style.width) > 10 && 
+          parseInt(selection.style.height) > 10) {
+        captureSelectedArea();
+      }
     });
+    
+    // 提取截图逻辑为单独函数
+    async function captureSelectedArea() {
+      const bounds = {
+        x: parseInt(selection.style.left),
+        y: parseInt(selection.style.top),
+        width: parseInt(selection.style.width),
+        height: parseInt(selection.style.height)
+      };
+      
+      console.log('选择区域:', bounds);
+      
+      try {
+        // 使用主进程的方法进行截图
+        const result = await ipcRenderer.invoke('do-capture-screen', bounds);
+        console.log('截图结果:', result);
+        if (!result) {
+          throw new Error('截图失败：未收到有效响应');
+        }
+        
+        if (!result.success) {
+          throw new Error(result.message || '截图失败：未知原因，请检查屏幕录制权限');
+        }
+        
+        console.log('图片已保存:', result.imagePath);
+        // 自动复制识别的文本到剪贴板
+        if (result.text) {
+          await ipcRenderer.invoke('copy-to-clipboard', result.text);
+          console.log('已自动复制文本到剪贴板');
+        }
+        
+        ipcRenderer.send('capture-completed', { imagePath: result.imagePath, bounds });
+      } catch (error) {
+        console.error('截图失败:', error);
+        
+        // 增强的错误处理
+        const errorMessage = document.createElement('div');
+        errorMessage.style.position = 'fixed';
+        errorMessage.style.top = '50%';
+        errorMessage.style.left = '50%';
+        errorMessage.style.transform = 'translate(-50%, -50%)';
+        errorMessage.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
+        errorMessage.style.color = 'white';
+        errorMessage.style.padding = '15px 20px';
+        errorMessage.style.borderRadius = '5px';
+        errorMessage.style.zIndex = '1000';
+        errorMessage.style.maxWidth = '80%';
+        errorMessage.style.textAlign = 'center';
+        errorMessage.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+        errorMessage.innerHTML = `<strong>截图失败</strong><br>${error.message || '未知错误'}`;
+        
+        document.body.appendChild(errorMessage);
+        
+        // 3秒后自动关闭错误提示
+        setTimeout(() => {
+          errorMessage.style.opacity = '0';
+          errorMessage.style.transition = 'opacity 0.5s';
+          setTimeout(() => {
+            document.body.removeChild(errorMessage);
+          }, 500);
+        }, 3000);
+        
+        // 2秒后自动关闭截图窗口
+        setTimeout(() => {
+          ipcRenderer.send('capture-cancelled');
+        }, 2000);
+      }
+    }
     
     document.addEventListener('keydown', async (e) => {
       console.log('按键按下:', e.key);
@@ -134,66 +209,10 @@
         ipcRenderer.send('capture-cancelled');
       }
       
+      // 保留 Enter 键功能作为备选方式
       if (e.key === 'Enter' && selection.style.display === 'block') {
-        console.log('确认截图');
-        const bounds = {
-          x: parseInt(selection.style.left),
-          y: parseInt(selection.style.top),
-          width: parseInt(selection.style.width),
-          height: parseInt(selection.style.height)
-        };
-        
-        console.log('选择区域:', bounds);
-        
-        if (bounds.width > 10 && bounds.height > 10) {
-          try {
-            // 使用主进程的方法进行截图
-            const result = await ipcRenderer.invoke('do-capture-screen', bounds);
-            
-            if (!result || !result.success) {
-              throw new Error(result.message || '截图失败');
-            }
-            
-            console.log('图片已保存:', result.imagePath);
-            ipcRenderer.send('capture-completed', { imagePath: result.imagePath, bounds });
-          } catch (error) {
-            console.error('截图失败:', error);
-            
-            // 增强的错误处理
-            const errorMessage = document.createElement('div');
-            errorMessage.style.position = 'fixed';
-            errorMessage.style.top = '50%';
-            errorMessage.style.left = '50%';
-            errorMessage.style.transform = 'translate(-50%, -50%)';
-            errorMessage.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
-            errorMessage.style.color = 'white';
-            errorMessage.style.padding = '15px 20px';
-            errorMessage.style.borderRadius = '5px';
-            errorMessage.style.zIndex = '1000';
-            errorMessage.style.maxWidth = '80%';
-            errorMessage.style.textAlign = 'center';
-            errorMessage.style.fontFamily = 'system-ui, -apple-system, sans-serif';
-            errorMessage.innerHTML = `<strong>截图失败</strong><br>${error.message || '未知错误'}`;
-            
-            document.body.appendChild(errorMessage);
-            
-            // 3秒后自动关闭错误提示
-            setTimeout(() => {
-              errorMessage.style.opacity = '0';
-              errorMessage.style.transition = 'opacity 0.5s';
-              setTimeout(() => {
-                document.body.removeChild(errorMessage);
-              }, 500);
-            }, 3000);
-            
-            // 2秒后自动关闭截图窗口
-            setTimeout(() => {
-              ipcRenderer.send('capture-cancelled');
-            }, 2000);
-          }
-        } else {
-          console.log('选择区域太小，忽略');
-        }
+        console.log('通过 Enter 键确认截图');
+        captureSelectedArea();
       }
     });
   </script>

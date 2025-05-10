@@ -6,11 +6,11 @@
           <p>{{ $t('textExtractor.description') }}</p>
           
           <div class="mt-4">
-            <div class="selection-area p-4 min-h-[200px] border border-base-300 rounded-lg mb-4"
+            <!-- <div class="selection-area p-4 min-h-[200px] border border-base-300 rounded-lg mb-4"
                  @mouseup="handleTextSelection">
               <p v-if="!selectedText">{{ $t('textExtractor.instruction') }}</p>
               <p v-else>{{ selectedText }}</p>
-            </div>
+            </div> -->
             
             <div class="flex flex-wrap gap-2 mb-4">
               <button class="btn btn-primary" @click="captureScreen" :disabled="isCapturing">
@@ -32,7 +32,7 @@
               <div v-if="isExtracting" class="flex items-center justify-center p-4">
                 <span class="loading loading-spinner loading-lg"></span>
               </div>
-              <textarea v-else class="textarea textarea-bordered w-full min-h-[150px]" 
+              <textarea v-else class="textarea textarea-bordered min-h-[200px]" rows="20"
                         v-model="extractedText"></textarea>
             </div>
           </div>
@@ -65,6 +65,7 @@
     try {
       const result = await window.electron.captureScreen();
       if (result.success) {
+        console.log('result.text:', result.text);
         extractedText.value = result.text;
         showToast('截图文本提取成功', 'success');
       } else {
