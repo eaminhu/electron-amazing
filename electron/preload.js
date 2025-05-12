@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld('electron', {
   // 图像处理相关
   processImages: (folderPath) => ipcRenderer.invoke('process-images', folderPath),
   selectFolder: () => ipcRenderer.invoke('select-folder'),
+  selectImages: () => ipcRenderer.invoke('select-images'),
   
   // 文件管理相关
   renameFolders: () => ipcRenderer.invoke('rename-folders'),

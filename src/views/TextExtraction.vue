@@ -88,17 +88,37 @@
   
   const uploadImage = async () => {
     try {
-      const result = await window.electron.selectFolder();
+      // 使用 selectImages 而不是 selectFolder
+      const result = await window.electron.selectImages();
       if (!result.success) return;
       
       isExtracting.value = true;
-      const extractionResult = await window.electron.extractText(result.folderPath);
       
-      if (extractionResult.success) {
-        extractedText.value = extractionResult.text;
-        showToast('文本提取成功', 'success');
+      // 处理多个图片文件
+      if (result.filePaths && result.filePaths.length > 0) {
+        // 如果只选择了一个文件，直接提取
+        if (result.filePaths.length === 1) {
+          const extractionResult = await window.electron.extractText(result.filePaths[0]);
+          
+          if (extractionResult.success) {
+            extractedText.value = extractionResult.text;
+            showToast('文本提取成功', 'success');
+          } else {
+            showToast(`文本提取失败: ${extractionResult.message}`, 'error');
+          }
+        } else {
+          // 如果选择了多个文件，可以考虑合并结果或只处理第一个
+          const extractionResult = await window.electron.extractText(result.filePaths[0]);
+          
+          if (extractionResult.success) {
+            extractedText.value = extractionResult.text;
+            showToast(`已提取第一张图片的文本，共选择了 ${result.filePaths.length} 张图片`, 'success');
+          } else {
+            showToast(`文本提取失败: ${extractionResult.message}`, 'error');
+          }
+        }
       } else {
-        showToast(`文本提取失败: ${extractionResult.message}`, 'error');
+        showToast('未选择任何图片文件', 'warning');
       }
     } catch (error) {
       console.error('Error extracting text:', error);

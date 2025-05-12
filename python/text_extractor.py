@@ -6,7 +6,7 @@ import pytesseract
 from PIL import Image
 
 # 设置 Tesseract 路径（Windows 上需要）
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'/opt/homebrew/bin/tesseract'
 
 def extract_text_from_image(image_path):
     """从图像中提取文本"""
