@@ -1,7 +1,7 @@
 {
   "app": {
-    "title": "Amzing 图像处理工具",
-    "description": "强大的图像处理和文件管理工具"
+    "title": "文档处理工具箱",
+    "description": "强大的文档处理和文件管理工具"
   },
   "nav": {
     "home": "首页",
@@ -52,6 +52,19 @@
     "totalFiles": "总文件数",
     "movedFiles": "已移动文件",
     "clearResults": "清除结果",
-    "noResult": "尚未执行任何操作"
+    "noResult": "尚未执行任何操作",
+    "convertTitle": "批量转换 TIFF 文件",
+    "convertDescription": "递归遍历文件夹，将所有 TIFF 文件转换为 PNG 或 JPG 格式",
+    "outputFormat": "输出格式",
+    "convertButton": "选择文件夹并转换",
+    "convertedFiles": "已转换文件",
+    "pdfTitle": "图片生成 PDF",
+    "pdfDescription": "选择文件夹，将文件夹内的图片生成一个 PDF 文件",
+    "pdfOptions": "PDF 选项",
+    "sortByName": "按文件名排序",
+    "recursive": "递归包含子文件夹",
+    "pdfButton": "选择文件夹并生成 PDF",
+    "openPdf": "打开 PDF",
+    "totalImages": "总图片数"
   }
 }

@@ -23,6 +23,11 @@ contextBridge.exposeInMainWorld('electron', {
   renameFolders: () => ipcRenderer.invoke('rename-folders'),
   organizeFolders: () => ipcRenderer.invoke('organize-folders'),
   
+  // 文件转换相关
+  convertTiffFiles: (options) => ipcRenderer.invoke('convert-tiff-files', options),
+  generatePdfFromImages: (options) => ipcRenderer.invoke('generate-pdf-from-images', options),
+  openFile: (filePath) => ipcRenderer.invoke('open-file', filePath),
+  
   // 屏幕截图并识别文字
   captureScreen: () => ipcRenderer.invoke('capture-screen'),
 });

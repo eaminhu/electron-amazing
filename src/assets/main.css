@@ -826,6 +826,9 @@
 .w-64 {
   width: 12rem;
 }
+.w-10{
+  width: 5rem;
+}
 
 .min-h-[150px] {
   min-height: 150px;

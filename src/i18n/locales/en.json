@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Amzing Image Tool",
+    "title": "Document Toolkit",
     "description": "Powerful image processing and file management tool"
   },
   "nav": {
@@ -52,6 +52,19 @@
     "totalFiles": "Total Files",
     "movedFiles": "Moved Files",
     "clearResults": "Clear Results",
-    "noResult": "No operations performed yet"
+    "noResult": "No operations performed yet",
+    "convertTitle": "Batch Convert TIFF Files",
+    "convertDescription": "Recursively scan folders and convert all TIFF files to PNG or JPG format",
+    "outputFormat": "Output Format",
+    "convertButton": "Select Folder and Convert",
+    "convertedFiles": "Converted Files",
+    "pdfTitle": "Generate PDF from Images",
+    "pdfDescription": "Select a folder to generate a PDF file from images inside",
+    "pdfOptions": "PDF Options",
+    "sortByName": "Sort by filename",
+    "recursive": "Include subfolders recursively",
+    "pdfButton": "Select Folder and Generate PDF",
+    "openPdf": "Open PDF",
+    "totalImages": "Total Images"
   }
 }

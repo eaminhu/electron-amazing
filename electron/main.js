@@ -9,6 +9,7 @@ const Store = require('electron-store');
 require('./ipc/imageProcessor');
 require('./ipc/fileManager');
 require('./ipc/textExtractor');
+require('./ipc/fileConverter');
 
 const store = new Store();
 
@@ -342,3 +343,6 @@ if (!ipcMain.listenerCount('copy-to-clipboard')) {
     }
   });
 }
+
+
+
