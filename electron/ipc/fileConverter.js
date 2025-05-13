@@ -43,7 +43,7 @@ function getImageFiles(dir, recursive = false) {
     } else {
       // 检查是否为图片文件
       const ext = path.extname(file).toLowerCase();
-      if (['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp','.tiff'].includes(ext)) {
+      if (['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'].includes(ext)) {
         results.push(filePath);
       }
     }

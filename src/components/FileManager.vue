@@ -8,9 +8,22 @@
           <p>{{ $t('fileManager.renameDescription') }}</p>
           
           <div class="mt-4">
-            <button class="btn btn-primary" @click="renameFolders" :disabled="isRenaming">
+            <!-- 新增名称输入框 -->
+            <div class="form-control mb-4">
+              <label class="label">
+                <span class="label-text">{{ $t('fileManager.newFolderName') || '新文件夹名称' }}</span>
+              </label>
+              <input 
+                type="text" 
+                v-model="newFolderName"
+                :placeholder="$t('fileManager.namePlaceholder') || '请输入统一文件夹名称'" 
+                class="input input-bordered w-full max-w-xs"
+              />
+            </div>
+
+            <button class="btn btn-primary" @click="renameFolders" :disabled="isRenaming || !newFolderName">
               <span v-if="isRenaming" class="loading loading-spinner"></span>
-              {{ $t('fileManager.renameButton') }}
+              {{ $t('fileManager.renameButton') || '批量重命名文件夹' }}
             </button>
             
             <div v-if="renameResults || isRenaming" class="result-area mt-4">
@@ -66,7 +79,7 @@
       </div>
       
       <!-- 按类型整理文件 -->
-      <div class="card bg-base-100 shadow-xl">
+      <!-- <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
           <h2 class="card-title">{{ $t('fileManager.organizeTitle') }}</h2>
           <p>{{ $t('fileManager.organizeDescription') }}</p>
@@ -114,7 +127,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       
       <!-- TIFF 转换功能 -->
       <div class="card bg-base-100 shadow-xl">
@@ -280,10 +293,15 @@ const pdfOptions = ref({
 });
 const { showToast } = useToast();
 
+const newFolderName = ref('');  // 新增名称变量
+
 const renameFolders = async () => {
   try {
     isRenaming.value = true;
-    const result = await window.electron.renameFolders();
+    const result = await window.electron.renameFolders({
+      newName: newFolderName.value,  // 传递新名称
+      recursive: true  // 启用递归
+    });
     
     if (result.success) {
       renameResults.value = result;

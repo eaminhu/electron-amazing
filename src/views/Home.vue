@@ -10,7 +10,7 @@
             <h1 class="text-5xl font-bold">{{ $t('app.title') }}</h1>
           </div>
           
-          <p class="py-6">{{ $t('app.description') }}</p>
+          <p class="py-6 text-secondary">{{ $t('app.description') }}</p>
           <div class="flex flex-wrap justify-center gap-2">
             <router-link to="/text-extraction" class="btn btn-primary">
               {{ $t('nav.textExtraction') }}

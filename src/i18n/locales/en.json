@@ -41,8 +41,7 @@
     "title": "File Management",
     "description": "Batch rename folders and organize files automatically",
     "renameTitle": "Batch Rename Folders",
-    "renameDescription": "Clean up folder names by removing spaces and special characters",
-    "renameButton": "Select Parent Folder",
+    "renameDescription": "Rename subfolders in batches based on the name of the parent folder.",
     "organizeTitle": "Organize Files by Type",
     "organizeDescription": "Automatically organize files into folders based on file type",
     "organizeButton": "Select Folder",
@@ -65,6 +64,9 @@
     "recursive": "Include subfolders recursively",
     "pdfButton": "Select Folder and Generate PDF",
     "openPdf": "Open PDF",
-    "totalImages": "Total Images"
+    "totalImages": "Total Images",
+    "newFolderName": "New Folder Name",
+    "namePlaceholder": "Enter unified folder name",
+    "renameButton": "Batch Rename Folders"
   }
 }

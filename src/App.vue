@@ -31,7 +31,7 @@
         </div> -->
         
         <!-- 主内容区域 -->
-        <div class="p-4">
+        <div class="p-4 drawer-content">
           <router-view />
         </div>
       </div>
