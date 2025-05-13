@@ -2,6 +2,10 @@
   "name": "electron-amzing",
   "version": "1.0.0",
   "description": "Advanced image processing and file management app with Electron, Vue3 and Python",
+  "author": {
+    "name": "Kris Hu",
+    "email": "eaminhu@gmail.com"
+  },
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
@@ -61,6 +65,9 @@
     },
     "linux": {
       "target": ["AppImage"]
+    },
+    "electronDownload": {
+      "mirror": "https://npmmirror.com/mirrors/electron/"
     }
   }
 }
