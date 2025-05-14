@@ -1,6 +1,6 @@
+// 在 preload.js 中
 const { contextBridge, ipcRenderer } = require('electron');
 
-// 添加屏幕截图 API
 contextBridge.exposeInMainWorld('electron', {
   // 主题相关
   getTheme: () => ipcRenderer.invoke('get-theme'),
@@ -30,4 +30,15 @@ contextBridge.exposeInMainWorld('electron', {
   
   // 屏幕截图并识别文字
   captureScreen: () => ipcRenderer.invoke('capture-screen'),
+  
+  // 添加事件监听和发送方法
+  on: (channel, callback) => {
+    ipcRenderer.on(channel, (_, data) => callback(data));
+  },
+  send: (channel, data) => {
+    ipcRenderer.send(channel, data);
+  },
+  removeAllListeners: (channel) => {
+    ipcRenderer.removeAllListeners(channel);
+  }
 });

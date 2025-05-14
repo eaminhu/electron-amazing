@@ -35,7 +35,8 @@
     "resultTitle": "Processing Results",
     "totalImages": "Total Images",
     "processedImages": "Processed Images",
-    "noResult": "No images processed yet"
+    "noResult": "No images processed yet",
+    "output": "Processed images will be saved in the output folder in the same directory as the original images."
   },
   "fileManager": {
     "title": "File Management",

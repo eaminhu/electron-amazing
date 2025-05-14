@@ -355,6 +355,7 @@
 }
 .text-secondary {
   color: var(--text-secondary);
+  font-size: small;
 }
 
 

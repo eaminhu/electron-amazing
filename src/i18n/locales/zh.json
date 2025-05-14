@@ -35,7 +35,8 @@
     "resultTitle": "处理结果",
     "totalImages": "总图像数",
     "processedImages": "已处理图像",
-    "noResult": "尚未处理任何图像"
+    "noResult": "尚未处理任何图像",
+    "output": "处理完成后，结果将自动保存到您选择的同级目录下的 output 文件夹中"
   },
   "fileManager": {
     "title": "文件管理",

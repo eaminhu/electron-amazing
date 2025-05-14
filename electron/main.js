@@ -5,8 +5,9 @@ const Store = require('electron-store');
 
 
 
-// 导入 IPC 处理模块
+// Import IPC handlers only once
 require('./ipc/imageProcessor');
+// Other IPC handlers
 require('./ipc/fileManager');
 require('./ipc/textExtractor');
 require('./ipc/fileConverter');
@@ -343,6 +344,8 @@ if (!ipcMain.listenerCount('copy-to-clipboard')) {
     }
   });
 }
+
+
 
 
 
